@@ -1,0 +1,76 @@
+
+<!-- our custom CSS -->
+<link rel="stylesheet" href="/../libs/css/customTable.css" />
+
+<!-- DataTales Example -->
+<div class="card shadow">
+    <div class="card-body">
+    
+{# if content.rowCount|length > 0 #}
+
+{% if content.rowCount > 0 %}
+    <div>
+    <table class="table" cellspacing="0">
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>Produto Desejado</th>
+                        <th>Telefone</th>
+                        <th>Valor desejado</th>
+                        <th width="230">Observação</th>
+                    </tr>
+                    
+  {% for row in content.clientes %}
+  
+              <tr class='clickable-row' data-href='/read_cliente/{{row.id}}'>
+                <td>{{row.id}}</td>
+                <td>{{row.date|date('d-m-Y') }}</td>
+                <td>{{row.name}}</td>
+                <td>{{row.produto}}</td>
+                <td>{{row.telefone}}</td>
+                <td>{{row.valordesejado}}</td>
+                <td>{{row.observacao}}</td>
+ 
+                {#<td>
+
+                //echo "<a href='/read_cliente/{$id}' class='btn btn-primary mb-1'>
+                //    <span class='fab fa-readme'></span>
+                //</a>
+                 
+                //<a href='/update_cliente/{$id}' class='btn btn-info'>
+                //    <span cx'lass='fas fa-edit'></span>
+                //</a>";
+
+                //echo "</td>";#}
+ 
+              </tr>
+  {% endfor %}
+ 
+        </table>
+        {% include 'paging.twig'%}
+        </div>
+
+{% else %}
+    <div class='alert alert-info'>No produtos found.</div>
+{% endif %}
+  
+<script>
+
+$(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+
+$(document).ready(function(e){
+    $('.search-panel .dropdown-menu').find('a').click(function(e) {
+		e.preventDefault();
+		var param = $(this).attr("href").replace("#","");
+		var concept = $(this).text();
+		$('.search-panel span#search_concept').text(concept);
+		$('.input-group #search_param').val(param);
+	});
+});
+
+</script>

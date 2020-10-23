@@ -1,0 +1,127 @@
+ {% extends 'Templates/app.twig'%}
+
+{% block content %}
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <form method="post" id="create_cliente" role="form">
+        <div class="controls">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="form_data">Data *</label>
+                        <input id="form_data" type="date" name="data" class="form-control" required="required" data-error="Date is required.">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="form_telefone">Telefone *</label>
+                        <input id="form_telefone" type="phone" name="telefone" class="form-control" placeholder="Telefone *" required="required" data-error="Phone is required.">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="form_name">Nome do Cliente *</label>
+                        <input id="form_name" type="text" name="name" class="form-control" placeholder="Cliente name *" required="required" data-error="Cliente name is required.">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="form_produto">Produto desejado *</label>
+                        <input id="form_produto" type="text" name="produto" class="form-control" placeholder="Produto *">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="form_valordesejado">Valor desejado</label>
+                        <input id="form_valordesejado" type="number" name="valordesejado" class="form-control" placeholder="Price">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="form_desconto">Desconto Desejado</label>
+                        <input id="form_desconto" type="number" name="desconto" class="form-control" placeholder="Discount">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="form_alertdate">Data alerta</label>
+                        <input id="form_alertdate" type="date" name="alertdate" class="form-control" placeholder="Data alerta *">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="form_observacao">Observação *</label>
+                        <textarea id="form_observacao" name="observacao" class="form-control" placeholder="Message for me" rows="4" required="required" data-error="Please, leave us a description."></textarea>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" class="btn btn-success btn-send" id="btn_send" value="Create">
+                </div>
+            </div>
+        </div>
+
+        </form>
+
+        <div class='alert alert-success alert-dismissable fade' style="margin-top: 20px" id="alertCreate">
+            Cliente Criado com sucesso.
+        </div>
+
+        <div class='alert alert-danger alert-dismissable fade' id="alertError">
+            Erro, verificar campos.
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript"> 
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day);
+
+    $("#form_data").val(today);
+    $("#alertCreate").hide();
+    $("#alertError").hide();
+
+	$(document).ready(function(){
+		$('#create_cliente').submit(function(){
+			var dados = jQuery( this ).serializeArray();
+
+			jQuery.ajax({
+				type: "POST",
+				url: "/create_cliente",
+				data: dados,
+				success: function( data )
+				{
+                    if(data == 'true'){
+                            $('#btn_send').addClass('disabled');
+                            $("#alertError").hide();
+                            $("#alertCreate").show();
+                            $("#alertCreate").addClass('show');
+                    }else{
+                            $("#alertError").show();
+                            $("#alertError").addClass('show');
+                    }
+				}
+			});
+			
+			return false;
+		});
+	});
+	</script>
+    
+    {% endblock %}

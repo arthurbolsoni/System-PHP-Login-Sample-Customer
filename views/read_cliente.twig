@@ -1,0 +1,250 @@
+{% extends 'Templates/app.twig'%}
+
+{% block content %} 
+ 
+<div class="card shadow">
+    <div class="card-body">
+    <div class="details-tab">
+											<div class="d-flex flex-row align-items-center mb-2">
+												<h3 class="card-title media-body">Informações do Cliente</h3>
+
+												<a href="#" class="btn btn-default" id="btnbookmark"><i class="{% if (content.flag == 0) %}{{"far fa-bookmark"}}{% else %}{{"fas fa-bookmark"}}{% endif %}"></i></a>
+												<a href="#" class="btn btn-default" id="btnedit"><i class="far fa-edit"></i></a>
+{# 
+												<div class="dropdown">
+													<a href="#" class="btn btn-default btn-circle btn-outline-dark" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+													<div class="dropdown-menu dropdown-menu-right">
+														<a class="dropdown-item" href="#"><i class="far fa-edit fa-sm fa-fw mr-2"></i>Edit</a>
+													</div>
+												</div> #}
+											</div>
+											<div id="view-card">
+												<div class="row">	
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Nome</label>
+														<p class="font-weight-normal">{{content.name}}</p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Produto Desejado</label>
+														<p class="font-weight-normal">{{content.produto}}</p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Valor desejado do produto</label>
+														<p class="font-weight-normal">{{content.valordesejado}}</p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Desconto Desejado</label>
+														<p class="font-weight-normal">{{content.desconto}}</p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Data</label>
+														<p class="font-weight-normal">{{content.date|date('d-m-Y') }}</p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Telefone</label>
+														<p class="font-weight-normal"><a href="{{content.telefone}}" title="{{content.telefone}}" class="phone">{{content.telefone}}</a></p>
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														<label class="col-form-label control-label font-weight-bold">Data Alerta</label>
+														<p class="font-weight-normal">{{content.date|date('d-m-Y') }}</p>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label class="col-form-label control-label font-weight-bold">Observação</label>
+															<textarea readonly class="form-control">{{content.observacao}}</textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+											<form method="post" id="edit-card" style="display: none;">
+
+												<div class='alert alert-danger alert-dismissable fade' id="alertError">
+													Erro ao editar cliente. Preencher o campos corretamente.
+												</div>
+
+												<div class="row">
+
+													<div class="col-12 col-md-6 col-lg-3">
+															<label for="fn" class="col-form-label control-label font-weight-bold">Nome</label>
+															<input type="text" name="name" class="form-control" value="{{content.name}}" id="fn">
+														
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														
+															<label for="ln" class="col-form-label control-label font-weight-bold">Produto Desejado</label>
+															<input type="text" name="produto" class="form-control" value="{{content.produto}}" id="ln">
+														
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														
+															<label for="mn" class="col-form-label control-label font-weight-bold">Valor desejado do produto</label>
+															<input type="number" name="valordesejado" class="form-control" value="{{content.valordesejado}}" id="mn">
+														
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														
+															<label class="col-form-label control-label font-weight-bold">Desconto Desejado</label>
+															<input type="number" name="desconto" class="form-control" value="{{content.desconto}}">
+														
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+														
+															<label class="col-form-label control-label font-weight-bold">Data</label>
+															<input type="date" name="created" class="form-control" value="{{content.date|date('Y-m-d') }}">
+														
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+															<label class="col-form-label control-label font-weight-bold">Telefone</label>
+															<input type="number" name="telefone" class="form-control" value="{{content.telefone}}" id="phone">
+													</div>
+													<div class="col-12 col-md-6 col-lg-3">
+															<label class="col-form-label control-label font-weight-bold">Data Alerta</label>
+															<input type="date" name="alertdate" class="form-control" value="{{content.date|date('Y-m-d') }}" id="phone">
+													</div>
+													<div class="col-md-12">
+															<label class="col-form-label control-label font-weight-bold">Observação</label>
+															<textarea Type="text" name="observacao" class="form-control">{{content.observacao}}</textarea>
+													</div>
+													
+													{{csrf.field | raw}}
+												</div>
+												<div class="row">
+													<div class="col-12 mt-3">
+														<button class="btn btn-primary" type="submit" id="btn_send">Salvar</button>
+													</div>
+												</div>
+											</form>
+										</div>
+{#                                         
+    <form method="post" id="update_cliente">
+        <table>
+    
+            <tr>
+                <td>Data</td>
+                <td>{{content.date|date('d-m-Y') }}</td>
+            </tr>
+    
+            <tr>
+                <td>Nome</td>
+                <td>{{content.name}}</td>
+            </tr>
+
+            <tr>
+                <td>Valor desejado do produto</td>
+                <td>{{content.valordesejado}}</td>
+            </tr>
+
+            <tr>
+                <td>Desconto desejado</td>
+                <td>{{content.desconto}}</td>
+            </tr>
+            
+            <tr>
+                <td>Produto Desejado</td>
+                <td>{{content.produto}}</td>
+            </tr>
+    
+            <tr>
+                <td>Telefone</td>
+                <td>{{content.telefone}}</td>
+            </tr>
+    
+            <tr>
+                <td>Observação</td>
+                <td><textarea readonly class='form-control'>{{content.observacao}}</textarea></td>
+            </tr>
+    
+        </table>
+    </form> #}
+</div>
+</div>
+<script>
+$(".phone").text(function(i, text) {
+	if(text.toString().length >= 11){
+        text = text.replace(/(\d{2})(\d{3})(\d{3})([0-9]*)/, "($1) $2-$3-$4");
+		return text;
+	}else if(text.toString().length == 10){
+        text = text.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+        return text;
+	}else if(text.toString().length == 9){
+        text = text.replace(/(\d{3})(\d{3})(\d{3})/, "$1-$2-$3");
+        return text;
+	}else{
+        text = text.replace(/(\d{4})(\d{4})/, "$1-$2");
+        return text;
+	}
+});
+
+$("#btnedit").click(function() {
+	if(document.getElementById("view-card").style.display == "none"){
+		document.getElementById("view-card").style.display="block";
+		document.getElementById("edit-card").style.display="none";
+	}else{	
+		document.getElementById("view-card").style.display="none";
+		document.getElementById("edit-card").style.display="block";
+	}
+});
+
+function iconbookmark(){
+	if($("#btnbookmark").find('i').hasClass('far')){
+		$("#btnbookmark").find('i').removeClass('far');
+		$("#btnbookmark").find('i').addClass('fas');
+	}else{
+		$("#btnbookmark").find('i').removeClass('fas');
+		$("#btnbookmark").find('i').addClass('far');
+	}
+}
+
+$("#btnbookmark").click(function() {
+	$flag = $("#btnbookmark").find('i').hasClass('far');
+
+	iconbookmark();
+	
+	var dados = {'id': {{content.id}}, flag: $flag};
+
+	jQuery.ajax({
+				type: "POST",
+				url: "/bookmark/add",
+				data: dados,
+				success: function( data )
+				{
+                    if(data == 'true'){
+                    }else{
+                        $("#alertError").show();
+                        $("#alertError").addClass('show');
+                    }
+				}
+			});
+});
+
+$(document).ready(function(){
+	$("#alertError").hide();
+
+ $('#edit-card').submit(function(event) { 
+            event.preventDefault();
+
+			var dados = jQuery( this ).serializeArray();
+            dados.push({name: 'id', value: {{content.id}}});
+
+			jQuery.ajax({
+				type: "POST",
+				url: "/update_cliente",
+				data: dados,
+				success: function( data )
+				{
+                    if(data == 'true'){
+						location.reload();
+                    }else{
+                        $("#alertError").show();
+                        $("#alertError").addClass('show');
+                    }
+				}
+			});
+			
+			return false;
+		});
+});
+
+</script>
+
+  {% endblock %}

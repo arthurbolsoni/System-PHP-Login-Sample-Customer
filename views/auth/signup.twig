@@ -1,0 +1,76 @@
+{% extends 'Templates/app.twig'%}
+
+{% block content %}
+
+<div class="row">
+          <div class="col-lg-7  mx-auto">
+            <div class="p-5">
+              <div class='alert alert-success alert-dismissable fade' id="alertCreate">
+                  Cliente has Created.
+              </div>
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Nova Conta</h1>
+              </div>
+              <form class="user" action="{{ path_for('auth.signup') }}" id="create_vendedor" method="post">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user {{ errors.nome ? ' is-invalid' : '' }}" name="nome" placeholder="First Name">
+                    <span class="invalid-feedback">{{ errors.nome | first }}</span>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user {{ errors.sobrenome ? ' is-invalid' : '' }}" name="sobrenome" placeholder="Last Name">
+                    <span class="invalid-feedback">{{ errors.sobrenome | first }}</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user {{ errors.email ? ' is-invalid' : '' }}" name="email" id="exampleInputEmail" placeholder="Email Address">
+                    <span class="invalid-feedback">{{ errors.email | first }}</span>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" class="form-control form-control-user {{ errors.password ? ' is-invalid' : '' }}" name="password" placeholder="Password">
+                    <span class="invalid-feedback">{{ errors.password | first }}</span>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-user" placeholder="Repeat Password">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-user btn-block" id="btn_send">Register Account</button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+<script type="text/javascript"> 
+
+	$(document).ready(function(){
+    
+    $("#alertCreate").hide();
+                            
+		$('#create_vendedor').submit(function(){
+      event.preventDefault();
+			var dados = jQuery( this ).serializeArray();
+
+			$.ajax({
+				type: "POST",
+				url: "/auth/vendedor/signup",
+				data: dados,
+				success: function( data )
+				{
+          var datas = JSON.parse(data);
+          console.log(datas.result);
+                    if(datas.result == 'true'){
+                            $("#alertCreate").show();
+                            $("#alertCreate").addClass('show');
+                    }else{
+                      console.log(datas);
+                    }
+				}
+			});
+			
+			return false;
+		});
+	});
+      </script>
+    {% endblock %}
